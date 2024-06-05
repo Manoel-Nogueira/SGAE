@@ -22,7 +22,7 @@ public class CreateExtensionForm extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CreateExtensionForm frame = new CreateExtensionForm();
+					CreateExtensionForm frame = new CreateExtensionForm(0, "");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -34,7 +34,8 @@ public class CreateExtensionForm extends JFrame{
 	/**
 	 * Create the frame.
 	 */
-	public CreateExtensionForm() {
+	public CreateExtensionForm(int ViewEditForm, String fileName) throws IOException {
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1400, 700);
 		setTitle("SGAE");
@@ -52,14 +53,30 @@ public class CreateExtensionForm extends JFrame{
 			contentPane.add(scrollPane);
 			
 		ExtensionFormScroll extensionFormScroll = new ExtensionFormScroll();
-		scrollPane.setViewportView(extensionFormScroll);
+		
+		if(ViewEditForm == 0) {
+			
+			scrollPane.setViewportView(extensionFormScroll);
+			
+			
+		}else if(ViewEditForm == 1) {
+			
+			extensionFormScroll.viewExtensionForm(fileName);
+			scrollPane.setViewportView(extensionFormScroll);
+		
+		}else if(ViewEditForm == 2) {
+			
+			extensionFormScroll.setName(fileName);
+			extensionFormScroll.editExtensionForm(fileName);
+			scrollPane.setViewportView(extensionFormScroll);
+		}
 		
 		//Nova execução em paralelo com a anterior
 		Thread 	checkState = new Thread(
 			
 		   ()-> { while(true) {
 			   
-			   System.out.println(extensionFormScroll.getReturnState());
+			   			System.out.println(extensionFormScroll.getReturnState());
 				
 						if(extensionFormScroll.getReturnState()) {
 							

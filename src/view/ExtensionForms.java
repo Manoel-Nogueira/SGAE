@@ -10,7 +10,9 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Point;
@@ -85,11 +87,19 @@ public class ExtensionForms extends JFrame {
 			btnButton_2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					
-					Point frame = getLocation();
-					CreateExtensionForm createExForm = new CreateExtensionForm();
-					createExForm.setLocation(frame);
-					createExForm.setVisible(true);
-					dispose();
+					
+					try {
+						
+						Point frame = getLocation();
+						CreateExtensionForm createExtForm = new CreateExtensionForm(0, "");
+						createExtForm.setLocation(frame);
+						createExtForm.setVisible(true);
+						dispose();
+						
+					} catch (IOException e1) {
+					
+						e1.printStackTrace();
+					}
 					
 				}
 			});
@@ -157,33 +167,65 @@ public class ExtensionForms extends JFrame {
 			JButton btnButton_3 = new JButton("Visualizar Formulário");
 			btnButton_3.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					
+						
 					try {
 						
-						ArrayList<String> listFile = ExtensionFormsController.readFolder(textField.getText());
-						
-						if(listFile != null) {
+						Path directoryFileForm = Paths.get(ExtensionFormsController.getFolderForms() + textField.getText() + ".txt");
 							
+						if(Files.exists(directoryFileForm)) {
 							
+							Point frame = getLocation();
+							CreateExtensionForm createExtForm = new CreateExtensionForm(1, textField.getText());
+							createExtForm.setLocation(frame);
+							createExtForm.setVisible(true);
+							dispose();
 							
 						}else {
 							
-							JOptionPane.showMessageDialog(null, "Erro ao tentar visualizar o arquivo","Error", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Erro ao tentar visualizar o arquivo ou o arquivo não existe","Error", JOptionPane.ERROR_MESSAGE);
 							
 						}
-						
+							
 					} catch (IOException e1) {
-						
-						e1.printStackTrace();
+
+							e1.printStackTrace();
 					}
-					
+
 				}
 			});
+			
 			btnButton_3.setBounds(917, 308, 184, 29);
 			contentPane.add(btnButton_3);
 			
 			
 			JButton btnButton_4 = new JButton("Editar Formulário");
+			btnButton_4.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					try {
+						
+							Path directoryFileForm = Paths.get(ExtensionFormsController.getFolderForms() + textField.getText() + ".txt");
+								
+							if(Files.exists(directoryFileForm)) {
+								
+								Point frame = getLocation();
+								CreateExtensionForm createExtForm = new CreateExtensionForm(2, textField.getText());
+								createExtForm.setLocation(frame);
+								createExtForm.setVisible(true);
+								dispose();
+								
+							}else {
+								
+								JOptionPane.showMessageDialog(null, "Erro ao tentar editar o arquivo ou o arquivo não existe","Error", JOptionPane.ERROR_MESSAGE);
+								
+							}
+							
+						} catch (IOException e1) {
+
+							e1.printStackTrace();
+						}
+				}
+			});
 			btnButton_4.setBounds(917, 381, 184, 29);
 			contentPane.add(btnButton_4);
 			
@@ -193,9 +235,10 @@ public class ExtensionForms extends JFrame {
 					
 					try {
 						
-						if(ExtensionFormsController.deleteForm(textField.getText())) {
+						if(ExtensionFormsController.deleteForm(textField.getText(), "folderSubmissionForms")) {
 						
 							JOptionPane.showMessageDialog(null, "Arquivo excluido com sucesso", "Info", JOptionPane.INFORMATION_MESSAGE);
+							
 							Point frame = getLocation();
 							ExtensionForms extensionforms = new ExtensionForms();
 							extensionforms.setLocation(frame);		
@@ -204,7 +247,7 @@ public class ExtensionForms extends JFrame {
 							
 						}else {
 							
-							JOptionPane.showMessageDialog(null, "Erro ao excluir o arquivo","Error", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Erro ao excluir o arquivo ou o arquivo não existe","Error", JOptionPane.ERROR_MESSAGE);
 							
 						}
 						

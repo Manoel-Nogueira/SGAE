@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-
 public class ExtensionFormsController {
 	
 	//Variável que pega o nome do SO em minúsculo
@@ -68,6 +67,7 @@ public class ExtensionFormsController {
 
 	public static boolean createNewForm(String nameFile, ArrayList<String> listChoices, String nameFolder) throws IOException {
 		
+		//pegando o caminho do diretório da pasta nameFolder
 		createFolderForms (nameFolder);
 		
 		Path directoryFileForm = Paths.get(getFolderForms() + nameFile + ".txt");
@@ -82,11 +82,11 @@ public class ExtensionFormsController {
 			//Insere as escolhas feitas no formulário dentro do arquivo utilizando o for-each
 			for(String choice : listChoices) {
 			
-				//Fecha o arquivo
-				toWrite.write(choice);
+				toWrite.write(choice + "\n");
 				
 			}
 			
+			//Fecha o arquivo
 			toWrite.close();
 				
 		}else {
@@ -99,7 +99,10 @@ public class ExtensionFormsController {
 		
 	}
 
-	public static boolean deleteForm(String nameFile) throws IOException {
+	public static boolean deleteForm(String nameFile, String nameFolder) throws IOException {
+		
+		//pegando o caminho do diretório da pasta nameFolder
+		createFolderForms (nameFolder);
 		
 		Path directoryFileForm = Paths.get(getFolderForms() + nameFile + ".txt");
 		
@@ -118,7 +121,10 @@ public class ExtensionFormsController {
 	
 	public static boolean editForm(String nameFile,  ArrayList<String> listChoices, String nameFolder) throws IOException {
 		
-		if(deleteForm(nameFile)) {
+		//pegando o caminho do diretório da pasta nameFolder
+		createFolderForms (nameFolder);
+		
+		if(deleteForm(nameFile, nameFolder)) {
 			
 			if(createNewForm(nameFile, listChoices, nameFolder)) {
 				
@@ -131,7 +137,10 @@ public class ExtensionFormsController {
 		return false;
 	}
 
-	public static ArrayList<String> readForm(String nameFile) throws IOException{
+	public static ArrayList<String> readForm(String nameFile, String nameFolder) throws IOException{
+		
+		//pegando o caminho do diretório da pasta nameFolder
+		createFolderForms (nameFolder);
 		
 		Path directoryFileForm = Paths.get(getFolderForms() + nameFile + ".txt");
 		
@@ -153,6 +162,7 @@ public class ExtensionFormsController {
 
 	public static ArrayList<String> readFolder(String nameFolder) throws IOException{
 		
+		//pegando o caminho do diretório da pasta nameFolder
 		createFolderForms (nameFolder);
 		
 		Path directorySubmissionFileForm = Paths.get(getFolderForms());
